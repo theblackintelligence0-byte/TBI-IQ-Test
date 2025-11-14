@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human Intelligence Quiz – Single Page</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    background-size: cover;
+    background-position: center;
+    transition: background 0.5s ease-in-out;
+  }
+  .quiz-container {
+    max-width: 700px;
+    margin: 80px auto;
+    background: rgba(0,0,0,0.65);
+    border-radius: 25px;
+    padding: 30px;
+    text-align: center;
+    border: 3px solid orange;
+  }
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 4px solid gold;
+  }
+  h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-weight: 800;
+  }
+  p {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .options button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    background: orange;
+    color: black;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .options button:hover {
+    background: gold;
+  }
+  #result {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <img id="avatar" class="avatar" src="" alt="Avatar">
+  <h2 id="question-number">Question 1</h2>
+  <p id="question-text"></p>
+  <div class="options">
+    <button onclick="selectAnswer(0)" id="opt0"></button>
+    <button onclick="selectAnswer(1)" id="opt1"></button>
+    <button onclick="selectAnswer(2)" id="opt2"></button>
+  </div>
+  <div id="result"></div>
+</div>
+
+<script>
+const quiz = [
+  {
+    question: "Which type of intelligence helps you understand people easily?",
+    options: ["Social intelligence","Physical intelligence","Tunnel intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/18139287/pexels-photo-18139287.jpeg",
+    avatar: "https://i.ibb.co/5KcW5h3/av1.png"
+  },
+  {
+    question: "What intelligence helps you stay calm during pressure?",
+    options: ["Emotional intelligence","Movement intelligence","Reflex intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/16796437/pexels-photo-16796437.jpeg",
+    avatar: "https://i.ibb.co/R6H6vwc/av2.png"
+  },
+  {
+    question: "Which intelligence helps you solve problems step-by-step?",
+    options: ["Logical reasoning","Fashion intelligence","Muscle intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/15818276/pexels-photo-15818276.jpeg",
+    avatar: "https://i.ibb.co/H4r4H2Z/av3.png"
+  },
+  {
+    question: "Which intelligence helps you understand your own feelings?",
+    options: ["Self-awareness intelligence","Street smart","Dance intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/17044897/pexels-photo-17044897.jpeg",
+    avatar: "https://i.ibb.co/ZM7Xpnv/av4.png"
+  },
+  {
+    question: "Which intelligence helps you make new ideas and think creatively?",
+    options: ["Creative intelligence","Fire intelligence","Automatic intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/15493863/pexels-photo-15493863.jpeg",
+    avatar: "https://i.ibb.co/vPxJVKD/av5.png"
+  },
+  {
+    question: "Which intelligence helps you stay focused for long periods?",
+    options: ["Attention intelligence","Running intelligence","Jumping intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/10788847/pexels-photo-10788847.jpeg",
+    avatar: "https://i.ibb.co/54bf39K/av6.png"
+  },
+  {
+    question: "Which intelligence helps you connect with people emotionally?",
+    options: ["Empathy","Fashion sense","Height intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/17015913/pexels-photo-17015913.jpeg",
+    avatar: "https://i.ibb.co/DW7WfJ1/av7.png"
+  },
+  {
+    question: "Which intelligence helps you understand patterns and numbers?",
+    options: ["Mathematical intelligence","Cooking intelligence","Noise intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/18408727/pexels-photo-18408727.jpeg",
+    avatar: "https://i.ibb.co/CtjmM0p/av8.png"
+  },
+  {
+    question: "Which intelligence helps you read situations correctly?",
+    options: ["Situational intelligence","Sleeping intelligence","Mirror intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/18854876/pexels-photo-18854876.jpeg",
+    avatar: "https://i.ibb.co/LvncrHm/av9.png"
+  },
+  {
+    question: "Which intelligence helps you make wise decisions?",
+    options: ["Wisdom intelligence","Shoe intelligence","Noise intelligence"],
+    answer: 0,
+    bg: "https://images.pexels.com/photos/17935290/pexels-photo-17935290.jpeg",
+    avatar: "https://i.ibb.co/Y0g6xyd/av10.png"
+  }
+];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion() {
+  const q = quiz[current];
+  document.getElementById('question-number').innerText = "Question " + (current + 1);
+  document.getElementById('question-text').innerText = q.question;
+  document.getElementById('opt0').innerText = "A. " + q.options[0];
+  document.getElementById('opt1').innerText = "B. " + q.options[1];
+  document.getElementById('opt2').innerText = "C. " + q.options[2];
+  document.body.style.backgroundImage = "url('" + q.bg + "')";
+  document.getElementById('avatar').src = q.avatar;
+  document.getElementById('result').innerText = "";
+}
+
+function selectAnswer(i) {
+  if(i === quiz[current].answer) score++;
+  current++;
+  if(current < quiz.length) {
+    loadQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.querySelector('.quiz-container').innerHTML = `<h2>🎉 Your Score: ${score} / ${quiz.length} 🎉</h2>
+  <p>Well done! Share it with your friends and challenge them too!</p>
+  <button onclick="restart()">Try Again</button>`;
+}
+
+function restart() {
+  current = 0;
+  score = 0;
+  loadQuestion();
+}
+
+window.onload = loadQuestion;
+</script>
+</body>
+</html>
